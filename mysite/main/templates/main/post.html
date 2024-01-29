@@ -1,0 +1,36 @@
+{% extends "main/header.html" %}
+{% block content %}
+<div class="row media content-section mobiledevice">
+    <div class="col-lg-9 col-md-12 col-sm-12" id="content">
+        <div class="d-flex">
+            <div>
+                <h1 class="title-style">{{ object.title }}</h1>
+            </div>
+        </div>
+        <p class="article-content line-clamp-5 subtitle-style">{{ object.body }}</p>
+        <div class="media-body">
+            {% for image in object.images.all %}
+            <img class="img-fluid" src="{{image.image.url}}">
+            {% endfor %}
+        </div>
+    </div>
+    <div class="col-lg-12 col-md-12 col-sm-12">
+
+        <div class="d-flex article-metadata">
+            <div>
+                {% if object.user %}
+                    <a class="mr-2" href="{% url 'profile' object.user %}">{{ object.user }}</a><br>
+                    <img class="img-fluid" src="{{ post_image.image }}">
+                {% endif %}
+                <small class="text-muted">Published {{ object.published|date:"F d, Y" }}</small>
+            </div>
+        </div>
+                {% if object.user == user %}
+                    <div style="float: left">
+                        <a class="btn btncolor btn-sm mt-1 mb-1" href="{% url 'post_update' object.id %}">Update</a>
+                        <a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'post_delete' object.id %}">Delete</a>
+                    </div>
+                {% endif %}
+    </div>
+
+{% endblock content %}

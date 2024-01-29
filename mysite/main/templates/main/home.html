@@ -1,0 +1,56 @@
+{% extends "main/header.html" %}
+{% load custom_filters %}
+
+{% block content %}
+    <div class="row display-flex justify-content-start">
+    {% for object in objects %}
+        <div class="col-lg-4 col-md-6 col-sm-12 mobiledevice">
+            <article class="media content-section customhover" style="height: 95%;">
+                <a href="{% url 'post_view' object.id %}">
+                    <div class="media-body">
+
+                        <div class="aspect-ratio-box">
+                            {% for image in object.images.all %}
+                                <img class="img-fluid" src="{{image.image.url}}">
+                            {% endfor %}
+                        </div>
+
+                        <div class="article-metadata">
+                            <a class="mr-2" href="{% url 'profile' object.user %}">{{ object.user }}</a>
+                            <small class="text-muted">{{ object.created_at|date:"F d, Y" }}</small>
+                        </div>
+                        <div>
+                            <a class="article-title line-clamp-2 title-style" style="font-size: 22px" href="{% url 'post_view' object.id %}">
+                                {{ object.title }}
+                            </a>
+                            <a href="{% url 'post_view' object.id %}" style="text-decoration: none;">
+                                <p class="article-content line-clamp-5 subtitle-style">{{ object.body }}</p>
+                            </a>
+                            <span class="like-count-{{ object.id }}">Likes: {{ object.likes.count }}</span>
+                            <p>Tags:</p>
+                            {% for tag in object.tags.all %}
+                                <p>{{ tag.name }}</p>
+                            {% endfor %}
+                            {% if user.is_authenticated %}
+                                {% if object.likes|user_has_liked:user %}
+                                    {% csrf_token %}
+                                    <button type="submit" class="like-button liked" data-post-id="{{ object.id }}" >Unlike</button>
+                                {% else %}
+                                    <button type="submit" class="like-button" data-post-id="{{ object.id }}">Like</button>
+                                {% endif %}
+                            {% endif %}
+                            {% if object.user == user %}
+                                <div style="float: right">
+                                    <a class="btn btncolor btn-sm mt-1 mb-1" href="{% url 'post_update' object.id %}">Update</a>
+                                    <a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'post_delete' object.id %}">Delete</a>
+                                </div>
+                            {% endif %}
+                            <p>{{ object.published }}</p>
+                        </div>
+                    </div>
+                </a>
+            </article>
+        </div>
+    {% endfor %}
+    </div>
+{% endblock content %}

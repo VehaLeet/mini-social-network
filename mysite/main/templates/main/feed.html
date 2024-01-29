@@ -1,0 +1,32 @@
+{% extends "main/header.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+    {% for item in feed_items %}
+        {% if item.post and item.post.user.username != user.username %}
+        <div class="article-metadata">
+           <p>
+               <a class="mr-2" href="{% url 'profile' item.user %}">{{item.user.username}}</a>created: <a class="mr-2" href="{% url 'post_view' item.post.id %}">{{ item.post }}</a>
+           </p>
+        </div>
+
+        {% elif item.followed_by and item.user.username != user.username and item.followed_by.username == user.username %}
+        <div class="article-metadata">
+           <p>
+               <a class="mr-2" href="{% url 'profile' item.user %}">{{item.user.username}}</a>followed: <a class="mr-2" href="{% url 'profile' item.followed_by %}">{{ item.followed_by.username }}</a>
+           </p>
+        </div>
+
+        {% elif item.like and item.like.user.username != user.username and item.like.post.user.username == user.username %}
+        <div class="article-metadata">
+           <p>
+               <a class="mr-2" href="{% url 'profile' item.user %}">{{item.user.username}}</a>liked: <a class="mr-2" href="{% url 'post_view' item.like.post.id %}">{{item.like.post.title}}</a>
+           </p>
+        </div>
+        {% endif %}
+    {% endfor %}
+
+
+
+{% endblock content %}

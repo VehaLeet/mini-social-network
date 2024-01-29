@@ -1,0 +1,14 @@
+{% extends "main/header.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="content-section col-lg-12 col-md-12 col-sm-12 tutorial-style" style="min-height:65vh;">
+    {% for user in user.followers.all %}
+        <p>
+            <a href="{% url 'profile' user.username %}">
+            {{ user.username }}
+            <img class="rounded-circle account-img profile-image" style="width: 60px; height: 60px;" src="{{ user.avatar.url }}">
+            </a>
+        </p>
+    {% endfor %}
+</div>
+{% endblock content %}
