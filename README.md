@@ -21,7 +21,7 @@ these fields: "RECAPTCHA_PUBLIC_KEY", "RECAPTCHA_PRIVATE_KEY".
    - "SOCIAL_AUTH_GITHUB_SECRET";
 
 To run app, use:
- - "docker-compose -f docker-compose.prod.yml down -v"
+ - "docker-compose -f docker-compose.prod.yml up"
 
 ### Prerequisites
 
